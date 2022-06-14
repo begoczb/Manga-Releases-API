@@ -5,7 +5,7 @@ const mangaVolumeSchema = new Schema({
     type: SchemaTypes.ObjectId,
     ref: "MangaSeries",
   },
-  title: String,
+  title: { type: String, unique: true },
   ISBN: String,
   number: Number,
   releaseDate: Date,

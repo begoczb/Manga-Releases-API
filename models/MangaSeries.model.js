@@ -1,7 +1,10 @@
 const { Schema, model, SchemaTypes } = require("mongoose");
 
 const mangaSeriesSchema = new Schema({
-  name: String,
+  name: {
+    type: String,
+    unique: true,
+  },
   authors: [String],
   synopsis: String,
   genre: [String],
@@ -9,6 +12,6 @@ const mangaSeriesSchema = new Schema({
   cover: String,
 });
 
-const MangaSeries = model("MangaSeries", mangaSerieSchema);
+const MangaSeries = model("MangaSeries", mangaSeriesSchema);
 
 module.exports = MangaSeries;
