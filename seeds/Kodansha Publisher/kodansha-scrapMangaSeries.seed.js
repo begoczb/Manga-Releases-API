@@ -2,7 +2,7 @@ const fetch = require("isomorphic-fetch");
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const MangaSeries = require("../../models/MangaSeries.model.js");
-const volumeInfo = require("./seven- scrapMangaVolume.seed");
+const volumeInfo = require("./kodansha-scrapMangaVolume.seed");
 
 async function mangaSeriesInfo(allLinks) {
   const timer = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -69,8 +69,8 @@ async function mangaSeriesInfo(allLinks) {
     );
     console.log(upsertedMangaSeries);
 
-    await volumeInfo(scrappedLinks, series._id, true);
-    await volumeInfo(leftover, series._id, false);
+    await volumeInfo(scrappedLinks, upsertedMangaSeries._id, true);
+    await volumeInfo(leftover, upsertedMangaSeries._id, false);
     await timer(200);
   }
 
