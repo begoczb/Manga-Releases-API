@@ -4,7 +4,7 @@ const mangaSeriesSchema = new Schema({
   name: String,
   authors: [String],
   synopsis: String,
-  genre: [String],
+  genres: [String],
   publisher: String,
   cover: String,
 });
