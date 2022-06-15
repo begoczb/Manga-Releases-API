@@ -19,6 +19,29 @@ router.get("/", isAuthenticated, async (req, res, next) => {
   }
 });
 
+//Get One Favorite
+router.get("/:id", isAuthenticated, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    if (!isValidObjectId(id)) {
+      res.status(400).json({
+        message: 'Please provide a valid object id for "favorite".',
+      });
+      return;
+    }
+
+    const foundOneFavorite = await Favorite.findById(id).populate("series", {
+      name: 1,
+      authors: 1,
+      _id: 0,
+    });
+    res.status(200).json(foundOneFavorite);
+  } catch (err) {
+    next(err);
+  }
+});
+
 //Create a Favorite
 router.post("/", isAuthenticated, async (req, res, next) => {
   try {
@@ -27,7 +50,7 @@ router.post("/", isAuthenticated, async (req, res, next) => {
 
     if (!isValidObjectId(series)) {
       const foundSeries = await MangaSeries.findOne({
-        name: { $regex: series },
+        name: { $regex: new RegExp(series, "i") },
       });
       if (foundSeries) {
         series = foundSeries._id;
@@ -38,6 +61,13 @@ router.post("/", isAuthenticated, async (req, res, next) => {
         });
         return;
       }
+    }
+    const foundFavorite = await Favorite.find({ series: series });
+    if (foundFavorite.length != 0) {
+      res
+        .status(409)
+        .json({ message: `You already have this series as favorite` });
+      return;
     }
 
     const { _id } = await Favorite.create({
@@ -61,6 +91,12 @@ router.delete(
   isAuthorizedUser,
   async (req, res, next) => {
     try {
+      if (!isValidObjectId(id)) {
+        res.status(400).json({
+          message: 'Please provide a valid object id for "favorite".',
+        });
+        return;
+      }
       await Favorite.findByIdAndDelete(req.params.favoriteId);
       res.sendStatus(204);
     } catch (error) {
