@@ -1,5 +1,5 @@
 const jsonwebtoken = require("jsonwebtoken");
-const User = require("../models/user.models.js");
+const User = require("../models/User.model.js");
 
 const isAuthenticated = async (req, res, next) => {
   const authorization = req.headers.authorization;
@@ -16,7 +16,7 @@ const isAuthenticated = async (req, res, next) => {
     console.log({ decodedJwt });
     const { username } = decodedJwt;
     const user = await User.findOne({ username });
-    
+
     req.user = user;
   } catch (error) {
     // invalid token
