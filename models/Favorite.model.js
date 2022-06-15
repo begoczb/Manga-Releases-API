@@ -6,7 +6,7 @@ const favoriteSchema = new Schema({
     ref: "User",
   },
   series: {
-    type: ObjectId,
+    type: SchemaTypes.ObjectId,
     ref: "MangaSeries",
   },
 });

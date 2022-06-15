@@ -26,11 +26,11 @@ async function volumeInfo(links, id, viewAll) {
       );
 
       if (!tempIsbn) {
-        volume.isbn = dom.window.document.querySelector(
+        volume.ISBN = dom.window.document.querySelector(
           `div.l-sidebar--baseline:nth-child(2) > span:nth-child(2) > span:nth-child(1)`
         ).textContent;
       } else {
-        volume.isbn = tempIsbn.textContent;
+        volume.ISBN = tempIsbn.textContent;
       }
 
       volume.number = i + 1;
@@ -40,6 +40,14 @@ async function volumeInfo(links, id, viewAll) {
       ).textContent;
 
       let { releaseDate } = volume;
+      console.log(`date we get: ${releaseDate}`);
+
+      if (releaseDate.includes("in")) {
+        console.log(`We have invalid date: ${releaseDate}`);
+        releaseDate = dom.window.document.querySelector(
+          `.product-info-box__release-info > div:nth-child(2) > div:nth-child(1) > span:nth-child(2) > span:nth-child(1)`
+        ).textContent;
+      }
 
       volume.releaseDate = dateConversion(releaseDate, "MMDDYYYY");
       volume.cover = dom.window.document.querySelector(`.attachment-large`).src;
@@ -70,9 +78,9 @@ async function volumeInfo(links, id, viewAll) {
           `.product-info-box__release-info > div:nth-child(1) > div:nth-child(2) > span:nth-child(2) > span:nth-child(1)`
         );
         if (tempIsbn) {
-          volume.isbn = tempIsbn.textContent;
+          volume.ISBN = tempIsbn.textContent;
         } else {
-          volume.isbn = "BUG";
+          volume.ISBN = "BUG";
         }
 
         volume.number = j + 1;
@@ -80,6 +88,14 @@ async function volumeInfo(links, id, viewAll) {
           `[role="definition"] > .tag`
         ).textContent;
         let { releaseDate } = volume;
+        console.log(`date we get: ${releaseDate}`);
+
+        if (releaseDate.includes("in")) {
+          console.log(`We have invalid date: ${releaseDate}`);
+          releaseDate = dom.window.document.querySelector(
+            `.product-info-box__release-info > div:nth-child(2) > div:nth-child(1) > span:nth-child(2) > span:nth-child(1)`
+          ).textContent;
+        }
 
         volume.releaseDate = dateConversion(releaseDate, "MMDDYYYY");
 
