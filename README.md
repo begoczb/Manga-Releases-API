@@ -9,7 +9,7 @@ This is a scrapper API that allows the user to search all relevant informations 
 
 ## Postman Documentation
 
-[Manga Release Api Documentation]()
+[Manga Releases Api Documentation]()
 
 
 ## Where to find us
