@@ -14,14 +14,29 @@ router.get("/", async (req, res, next) => {
     const series = req.query.series;
     const reverseOrder = req.query.reverseOrder;
 
-    let mangaVolumeFilter = await MangaVolume.find();
+    let mangaVolumeFilter = await MangaVolume.find().collation({
+      locale: "en",
+    });
 
     if (reverseOrder) {
-      mangaVolumeFilter = await MangaVolume.find().sort({ title: -1 });
+      mangaVolumeFilter = await MangaVolume.find()
+        .collation({
+          locale: "en",
+        })
+        .sort({ title: -1 });
     }
 
     if (title) {
-      mangaVolumeFilter = await MangaVolume.find({ title: title });
+      mangaVolumeFilter = await MangaVolume.find({
+        title: { $regex: new RegExp(title, "i") },
+      }).collation({
+        locale: "en",
+      });
+      if (reverseOrder) {
+        mangaVolumeFilter = await MangaVolume.find({
+          title: { $regex: new RegExp(title, "i") },
+        }).sort({ title: -1 });
+      }
       if (mangaVolumeFilter.length === 0) {
         res
           .status(400)
@@ -30,7 +45,9 @@ router.get("/", async (req, res, next) => {
       }
     }
     if (ISBN) {
-      mangaVolumeFilter = await MangaVolume.find({ ISBN: ISBN });
+      mangaVolumeFilter = await MangaVolume.find({ ISBN: ISBN }).collation({
+        locale: "en",
+      });
       if (mangaVolumeFilter.length === 0) {
         res
           .status(400)
@@ -39,11 +56,17 @@ router.get("/", async (req, res, next) => {
       }
     }
     if (number) {
-      mangaVolumeFilter = await MangaVolume.find({ number: number });
+      mangaVolumeFilter = await MangaVolume.find({ number: number }).collation({
+        locale: "en",
+      });
       if (reverseOrder) {
-        mangaVolumeFilter = await MangaVolume.find({ number: number }).sort({
-          number: -1,
-        });
+        mangaVolumeFilter = await MangaVolume.find({ number: number })
+          .collation({
+            locale: "en",
+          })
+          .sort({
+            number: -1,
+          });
       }
       if (mangaVolumeFilter.length === 0) {
         res
@@ -53,13 +76,21 @@ router.get("/", async (req, res, next) => {
       }
     }
     if (releaseDate) {
-      mangaVolumeFilter = await MangaVolume.find({ releaseDate: releaseDate });
+      mangaVolumeFilter = await MangaVolume.find({
+        releaseDate: releaseDate,
+      }).collation({
+        locale: "en",
+      });
       if (reverseOrder) {
         mangaVolumeFilter = await MangaVolume.find({
           releaseDate: releaseDate,
-        }).sort({
-          releaseDate: -1,
-        });
+        })
+          .collation({
+            locale: "en",
+          })
+          .sort({
+            title: -1,
+          });
       }
       if (mangaVolumeFilter.length === 0) {
         res.status(400).json({ message: "Please provide a correct date" });
@@ -68,14 +99,13 @@ router.get("/", async (req, res, next) => {
     }
     if (series) {
       if (!isValidObjectId(series)) {
-        foundMangaSeries = await MangaSeries.findOne({
-          name: series,
+        let foundMangaSeries = await MangaSeries.findOne({
+          name: { $regex: new RegExp(series, "i") },
         });
-        console.log(foundMangaSeries);
         if (foundMangaSeries) {
           mangaVolumeFilter = await MangaVolume.find({
             series: foundMangaSeries._id,
-          });
+          }).sort({ number: 1 });
           // console.log(mangaVolumeFilter);
         }
         if (reverseOrder) {
@@ -85,19 +115,21 @@ router.get("/", async (req, res, next) => {
             number: -1,
           });
         }
-        if (foundMangaSeries.length === 0) {
+        if (foundMangaSeries?.length === 0 || !foundMangaSeries) {
           res.status(400).json({ message: "No manga series name found" });
           return;
         }
       }
       if (isValidObjectId(series)) {
-        mangaVolumeFilter = await MangaVolume.findById(series);
+        mangaVolumeFilter = await MangaVolume.find({ series: series }).sort({
+          number: 1,
+        });
         if (reverseOrder) {
-          mangaVolumeFilter = await MangaVolume.findById(series).sort({
+          mangaVolumeFilter = await MangaVolume.find({ series: series }).sort({
             number: -1,
           });
         }
-        if (mangaVolumeFilter.length === 0) {
+        if (!mangaVolumeFilter || mangaVolumeFilter.length === 0) {
           res
             .status(400)
             .json({ message: "Please provide a correct series Id" });
