@@ -62,4 +62,21 @@ router.post("/login", async (req, res, next) => {
   res.status(200).json({ message: `Welcome ${username}`, authToken });
 });
 
+router.get("/verify", async (req, res, next) => {
+  const { authorization } = req.headers;
+
+  const token = authorization.replace("Bearer ", "");
+  console.log({ token });
+
+  try {
+    const payload = jsonwebtoken.verify(token, process.env.TOKEN_SECRET);
+    console.log({ payload });
+
+    res.json({ token, payload });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: "Invalid token" });
+  }
+});
+
 module.exports = router;
