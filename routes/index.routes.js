@@ -11,5 +11,6 @@ router.use("/auth", require("./auth.routes"));
 router.use("/mangaVolume", require("./mangaVolume.routes"));
 router.use("/favorite", require("./favorite.routes"));
 router.use("/calendar", require("./calendar.routes"));
+router.use("/user", require("./user.routes"));
 
 module.exports = router;

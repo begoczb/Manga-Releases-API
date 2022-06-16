@@ -39,6 +39,9 @@ router.get("/:year/:month", isAuthenticated, async (req, res, next) => {
     let latestVolumes = [];
     const { year, month } = req.params;
 
+    const nextMonth = month * 1 + 01;
+    const startOfNextMonth = `0${nextMonth}`;
+
     const foundFavorites = await Favorite.find({ user: _id });
     for (let i = 0; i < foundFavorites.length; i++) {
       const { series } = foundFavorites[i];
@@ -49,7 +52,7 @@ router.get("/:year/:month", isAuthenticated, async (req, res, next) => {
             {
               releaseDate: {
                 $gte: new Date(`${year}/${month}/01`),
-                $lte: new Date(`${year}/${month}/31`),
+                $lt: new Date(`${year}/${startOfNextMonth}/01`),
               },
             },
           ],

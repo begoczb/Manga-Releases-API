@@ -91,7 +91,7 @@ router.delete(
   isAuthorizedUser,
   async (req, res, next) => {
     try {
-      if (!isValidObjectId(id)) {
+      if (!isValidObjectId(req.params.favoriteId)) {
         res.status(400).json({
           message: 'Please provide a valid object id for "favorite".',
         });
