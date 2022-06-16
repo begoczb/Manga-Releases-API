@@ -13,5 +13,5 @@ This is a scrapper API that allows the user to search all relevant informations 
 
 
 ## Where to find us
-[Adrien Deveaux](https://github.com/Adriendev "Adrien Deveaux")
+[Adrien Deveaux](https://github.com/Adriendev "Adrien Deveaux")\
 [Begonia Calzado](https://github.com/begoczb "Begonia Calzado")
