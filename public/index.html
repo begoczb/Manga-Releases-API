@@ -4,9 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"
+      integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <link rel="stylesheet" href="stylesheets/style.css" />
     <script type="module" src="javascript/index.js"></script>
+    <script src="/script/auth/login.js" type="module"></script>
+    <script src="/script/auth/signup.js" type="module"></script>
     <title>Manga Release API</title>
   </head>
   <body>
@@ -15,19 +22,23 @@
 
       <section class="Log container">
         <button id="signup">Sign-up</button>
-        <button id="login">Log</button>
+        <button id="login">Log In</button>
 
         <div class="form container">
-          <form class="sign-form hidden">
-            <label for="username">username</label>
-            <input type="text" id="username" />
-            <button id="sign"></button>
+          <form class="sign-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" />
+            <label for="password">Password: </label>
+            <input type="password" id="password" name="password" />
+            <button id="signup-btn">Create Account</button>
           </form>
 
-          <form class="log-form hidden">
-            <label for="password">password</label>
-            <input type="text" id="password" />
-            <button id="log"></button>
+          <form class="log-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" />
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" />
+            <button id="log-btn">Log In</button>
           </form>
         </div>
       </section>
