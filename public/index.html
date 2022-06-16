@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="stylesheets/style.css" />
+    <script type="module" src="javascript/index.js"></script>
+    <title>Manga Release API</title>
+  </head>
+  <body>
+    <header>
+      <h1>Manga Release API</h1>
+
+      <section class="Log container">
+        <button id="signup">Sign-up</button>
+        <button id="login">Log</button>
+
+        <div class="form container">
+          <form class="sign-form hidden">
+            <label for="username">username</label>
+            <input type="text" id="username" />
+            <button id="sign"></button>
+          </form>
+
+          <form class="log-form hidden">
+            <label for="password">password</label>
+            <input type="text" id="password" />
+            <button id="log"></button>
+          </form>
+        </div>
+      </section>
+    </header>
+
+    <section class="search hidden">
+      <button id="get-series">Manga series</button>
+      <button id="get-volulmes">Manga volumes</button>
+      <button id="get-favorites">Favorites</button>
+      <button id="get-calendar">Calendar</button>
+
+      <div class="container hidden"></div>
+    </section>
+
+    <template id="manga-series">
+      <div class="card container"></div>
+      <picture class="container"><img src="" alt="" /></picture>
+      <h2></h2>
+      <h3></h3>
+      <h4></h4>
+      <div class="favorite"></div>
+      <button id="button favorite">add to favorite</button>
+    </template>
+    <template id="manga-volume">
+      <div class="card container">
+        <picture class="container"><img src="" alt="" /></picture>
+        <h2></h2>
+        <h3></h3>
+        <h4></h4>
+      </div>
+    </template>
+  </body>
+</html>
