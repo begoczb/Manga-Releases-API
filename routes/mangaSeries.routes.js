@@ -11,7 +11,7 @@ router.get("/", async (req, res, next) => {
     let publisher = req.query.publisher;
     const id = req.query.id;
     const reverseAlphabeticalOrder = req.query.reverseAlphabeticalOrder;
-    // console.log(authors.length);
+
     let mangaSeriesFilter = await MangaSeries.find().collation({
       locale: "en",
     });

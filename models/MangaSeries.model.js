@@ -9,7 +9,6 @@ const mangaSeriesSchema = new Schema({
   synopsis: String,
   genres: [String],
   publisher: String,
-  cover: String,
 });
 
 const MangaSeries = model("MangaSeries", mangaSeriesSchema);
