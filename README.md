@@ -16,6 +16,7 @@ We have 4 models with one to many and many to many relationships.
  + synopsis
  + genres
  + publisher
+ 
 
 * Manga Volumes
   + series
@@ -24,11 +25,13 @@ We have 4 models with one to many and many to many relationships.
   + number
   + releaseDate
   + cover
+  
 
 * User
   + username
   + password
   + timestamps
+  
   
 
 * Favorite
