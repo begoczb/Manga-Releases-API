@@ -91,7 +91,7 @@ router.get("/", async (req, res, next) => {
       if (reverseAlphabeticalOrder) {
         mangaSeriesFilter = await MangaSeries.find({
           $or: [
-            { genres: { $in: genres.map((genre) => new RegEXp(genre, "i")) } },
+            { genres: { $in: genres.map((genre) => new RegExp(genre, "i")) } },
           ],
         })
           .collation({
