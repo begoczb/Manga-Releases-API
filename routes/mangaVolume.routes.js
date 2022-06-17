@@ -10,7 +10,7 @@ router.get("/", async (req, res, next) => {
     const title = req.query.title;
     const ISBN = req.query.ISBN;
     const number = req.query.number;
-    const releaseDate = req.query.releaseDate;
+    let releaseDate = req.query.releaseDate;
     const series = req.query.series;
     const reverseOrder = req.query.reverseOrder;
 
@@ -76,22 +76,20 @@ router.get("/", async (req, res, next) => {
       }
     }
     if (releaseDate) {
+      // let date = new Date(releaseDate);
+      console.log(date);
       mangaVolumeFilter = await MangaVolume.find({
         releaseDate: releaseDate,
-      }).collation({
-        locale: "en",
       });
       if (reverseOrder) {
         mangaVolumeFilter = await MangaVolume.find({
           releaseDate: releaseDate,
         })
-          .collation({
-            locale: "en",
-          })
           .sort({
             title: -1,
           });
       }
+      console.log(mangaVolumeFilter);
       if (mangaVolumeFilter.length === 0) {
         res.status(400).json({ message: "Please provide a correct date" });
         return;
