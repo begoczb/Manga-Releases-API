@@ -11,8 +11,29 @@ This is a scrapper API that allows the user to search all relevant informations 
 We have 4 models with one to many and many to many relationships.
 
 * Manga Series
-* + name
-* +
+ + name
+ + authors
+ + synopsis
+ + genres
+ + publisher
+
+* Manga Volumes
+  + series
+  + title
+  + ISBN
+  + number
+  + releaseDate
+  + cover
+
+* User
+  + username
+  + password
+  + timestamps
+  
+
+* Favorite
+  + user
+  + series
 
 
 
