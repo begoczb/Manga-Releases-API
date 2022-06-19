@@ -1,5 +1,7 @@
 const fetch = require("isomorphic-fetch");
 const jsdom = require("jsdom");
+const { dateConversion } = require("../../helper/dateConversion.js");
+// const { getDate } = require("../../helper/dateConversion.js");
 const { JSDOM } = jsdom;
 const MangaVolume = require("../../models/MangaVolume.model.js");
 
@@ -21,8 +23,8 @@ function getReleaseDateFromBoldTags(boldTags) {
     labelRegex,
     valueRegex
   );
-  const [year, month, date] = releaseDateFromHtml.split("/");
-  return new Date(+year, month - 1, +date, 02, 00, 00);
+  const date = dateConversion(releaseDateFromHtml, "YYYYMMDD");
+  return date;
 }
 
 function getPropertyFromBoldTags(boldTags, labelRegex, valueRegex) {
@@ -33,7 +35,7 @@ function getPropertyFromBoldTags(boldTags, labelRegex, valueRegex) {
     if (labelRegex.test(label)) {
       value = boldTags[i].nextSibling.textContent.trim();
       if (!valueRegex.test(value)) {
-        console.log(value);
+        // console.log(value);
         throw new Error(`Unknown value: ${value}`);
       }
       continue;
@@ -90,9 +92,13 @@ async function scrapeMangaVolume(volumeLink, i = 0, id) {
     cover: volumesImg,
   };
 
-  const upsertedMangaVolume = await MangaVolume.findOneAndUpdate({ title: volumeTitle }, mangaVolume, {upsert: true, new: true});
+  const upsertedMangaVolume = await MangaVolume.findOneAndUpdate(
+    { title: volumeTitle },
+    mangaVolume,
+    { upsert: true, new: true }
+  );
 
-  console.log(upsertedMangaVolume);
+  // console.log(upsertedMangaVolume);
 }
 
 module.exports = mangasVolumesLinks;

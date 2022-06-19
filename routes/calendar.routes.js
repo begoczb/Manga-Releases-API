@@ -12,11 +12,14 @@ router.get("/", isAuthenticated, async (req, res, next) => {
     const { _id } = req.user;
     let latestVolumes = [];
     const foundFavorites = await Favorite.find({ user: _id });
+
     for (let i = 0; i < foundFavorites.length; i++) {
       const { series } = foundFavorites[i];
+
       const foundVolume = await MangaVolume.findOne({ series: series }).sort({
         number: -1,
       });
+      // console.log(foundVolume);
 
       latestVolumes.push(foundVolume);
     }

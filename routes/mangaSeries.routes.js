@@ -4,14 +4,15 @@ const MangaSeries = require("../models/MangaSeries.model.js");
 // Filter Manga Series:
 router.get("/", async (req, res, next) => {
   try {
-    console.log(req.query);
+    // console.log(req.query);
     let name = req.query.name;
     let authors = req.query.authors;
     let genres = req.query.genres;
     let publisher = req.query.publisher;
     const id = req.query.id;
     const reverseAlphabeticalOrder = req.query.reverseAlphabeticalOrder;
-
+    // console.log(publisher);
+    // console.log(genres);
     let mangaSeriesFilter = await MangaSeries.find().collation({
       locale: "en",
     });
@@ -79,7 +80,7 @@ router.get("/", async (req, res, next) => {
     }
     if (genres) {
       if (typeof genres === "string") {
-        authors = [genres];
+        genres = [genres];
       }
       mangaSeriesFilter = await MangaSeries.find({
         $or: [

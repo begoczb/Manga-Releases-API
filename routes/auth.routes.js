@@ -66,11 +66,11 @@ router.get("/verify", async (req, res, next) => {
   const { authorization } = req.headers;
 
   const token = authorization.replace("Bearer ", "");
-  console.log({ token });
+  // console.log({ token });
 
   try {
     const payload = jsonwebtoken.verify(token, process.env.TOKEN_SECRET);
-    console.log({ payload });
+    // console.log({ payload });
 
     res.json({ token, payload });
   } catch (error) {

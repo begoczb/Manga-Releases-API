@@ -3,7 +3,7 @@ const User = require("../models/User.model.js");
 
 const isAuthenticated = async (req, res, next) => {
   const authorization = req.headers.authorization;
-  console.log({ authorization });
+  // console.log({ authorization });
 
   if (!authorization) {
     res.status(401).json({ message: "Missing Authorization header" });
@@ -13,7 +13,7 @@ const isAuthenticated = async (req, res, next) => {
   const token = authorization.replace("Bearer ", "");
   try {
     const decodedJwt = jsonwebtoken.verify(token, process.env.TOKEN_SECRET);
-    console.log({ decodedJwt });
+    // console.log({ decodedJwt });
     const { username } = decodedJwt;
     const user = await User.findOne({ username });
 

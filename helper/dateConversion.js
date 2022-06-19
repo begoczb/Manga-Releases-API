@@ -1,58 +1,27 @@
-function dateConversion(date, format) {
-  let goodDate;
-  if (format === "YYYYMMDD") {
-    goodDate = date.split("/");
-    goodDate = new Date(
-      +goodDate[0],
-      +goodDate[1] - 1,
-      +goodDate[2],
-      02,
-      00,
-      00
-    );
-  } else if (format === "MMDDYYYY") {
-    goodDate = date.split("/");
-    goodDate = new Date(
-      +goodDate[2],
-      +goodDate[0] - 1,
-      +goodDate[1],
-      02,
-      00,
-      00
-    );
-  } else if (format === "YYYYDDMM") {
-    goodDate = date.split("/");
-    goodDate = new Date(
-      +goodDate[0],
-      +goodDate[2] - 1,
-      +goodDate[1],
-      02,
-      00,
-      00
-    );
-  } else if (format === "DDMMYYYY") {
-    goodDate = date.split("/");
-    goodDate = new Date(
-      +goodDate[2],
-      +goodDate[1] - 1,
-      +goodDate[0],
-      02,
-      00,
-      00
-    );
-  } else {
-    goodDate = date.split("/");
-    goodDate = new Date(
-      +goodDate[2],
-      +goodDate[0] - 1,
-      +goodDate[1],
-      02,
-      00,
-      00
-    );
-  }
-
-  return goodDate;
+function getDate(year, month, day) {
+  return new Date(+year, +month - 1, +day, 00, 00, 00);
 }
 
-module.exports = dateConversion;
+function dateConversion(date, format) {
+  const split = date.split("/");
+  switch (format) {
+    case "YYYYMMDD": {
+      const [year, month, day] = split;
+      return getDate(year, month, day);
+    }
+    case "YYYYDDMM": {
+      const [year, day, month] = split;
+      return getDate(year, month, day);
+    }
+    case "DDMMYYYY":
+      const [day, month, year] = split;
+      return getDate(year, month, day);
+    case "MMDDYYYY":
+    default: {
+      const [month, day, year] = split;
+      return getDate(year, month, day);
+    }
+  }
+}
+
+module.exports = { getDate, dateConversion };

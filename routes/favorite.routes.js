@@ -62,7 +62,9 @@ router.post("/", isAuthenticated, async (req, res, next) => {
         return;
       }
     }
-    const foundFavorite = await Favorite.find({ series: series });
+    const foundFavorite = await Favorite.find({
+      $and: [{ series: series }, { user: user }],
+    });
     if (foundFavorite.length != 0) {
       res
         .status(409)

@@ -3,7 +3,7 @@ const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const MangaVolume = require("../../models/MangaVolume.model.js");
 const homepageLinks = require("./kodansha-scrapSeriesPage.seed");
-const dateConversion = require("../../helper/dateConversion.js");
+const { dateConversion } = require("../../helper/dateConversion.js");
 
 async function volumeInfo(links, id, viewAll) {
   const volume = {
@@ -40,10 +40,10 @@ async function volumeInfo(links, id, viewAll) {
       ).textContent;
 
       let { releaseDate } = volume;
-      console.log(`date we get: ${releaseDate}`);
+      // console.log(`date we get: ${releaseDate}`);
 
       if (releaseDate.includes("in")) {
-        console.log(`We have invalid date: ${releaseDate}`);
+        // console.log(`We have invalid date: ${releaseDate}`);
         releaseDate = dom.window.document.querySelector(
           `.product-info-box__release-info > div:nth-child(2) > div:nth-child(1) > span:nth-child(2) > span:nth-child(1)`
         ).textContent;
@@ -59,7 +59,7 @@ async function volumeInfo(links, id, viewAll) {
         { upsert: true, new: true }
       );
 
-      console.log(upsertedMangaVolume);
+      // console.log(upsertedMangaVolume);
 
       await timer(200);
     } else {
@@ -88,10 +88,10 @@ async function volumeInfo(links, id, viewAll) {
           `[role="definition"] > .tag`
         ).textContent;
         let { releaseDate } = volume;
-        console.log(`date we get: ${releaseDate}`);
+        // console.log(`date we get: ${releaseDate}`);
 
         if (releaseDate.includes("in")) {
-          console.log(`We have invalid date: ${releaseDate}`);
+          // console.log(`We have invalid date: ${releaseDate}`);
           releaseDate = dom.window.document.querySelector(
             `.product-info-box__release-info > div:nth-child(2) > div:nth-child(1) > span:nth-child(2) > span:nth-child(1)`
           ).textContent;
@@ -109,7 +109,7 @@ async function volumeInfo(links, id, viewAll) {
           { upsert: true, new: true }
         );
 
-        console.log(upsertedMangaVolume);
+        // console.log(upsertedMangaVolume);
         await timer(300);
       }
     }
