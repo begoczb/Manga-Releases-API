@@ -37,10 +37,17 @@ async function mangaSeriesInfo(allLinks) {
       publisher: "Seven Seas Entertainment",
     };
 
-    const upsertedMangaSeries = await MangaSeries.findOneAndUpdate({ name: mangaSeriesName }, mangaSeries, {upsert: true, new: true});
-    console.log(upsertedMangaSeries);
+    const upsertedMangaSeries = await MangaSeries.findOneAndUpdate(
+      { name: mangaSeriesName },
+      mangaSeries,
+      { upsert: true, new: true }
+    );
+    // console.log(upsertedMangaSeries);
 
-    const allMangaVolumesLinks = await mangasVolumesLinks(link, mangaSeries._id);
+    const allMangaVolumesLinks = await mangasVolumesLinks(
+      link,
+      upsertedMangaSeries._id
+    );
     // console.log(allMangaVolumesLinks);
   }
 }

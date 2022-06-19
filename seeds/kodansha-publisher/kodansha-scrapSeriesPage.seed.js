@@ -40,14 +40,14 @@ async function homepageLinks(url) {
       for (let i = 2; i <= pagesTotal; i++) {
         const timer = (ms) => new Promise((res) => setTimeout(res, ms));
         url = insertString(url, `/page/${i}`, 40);
-        console.log(url);
+        // console.log(url);
         const res = await fetch(`${url}`);
         const text = await res.text();
         const dom = await new JSDOM(text);
         const allHref = dom.window.document.querySelectorAll(`.card__link`);
         allHref.forEach((element) => allLinks.push(element.href));
-        console.log(allLinks);
-        console.log(`page: ${i}`);
+        // console.log(allLinks);
+        // console.log(`page: ${i}`);
         await timer(200);
       }
     }

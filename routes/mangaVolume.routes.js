@@ -6,7 +6,7 @@ const MangaSeries = require("../models/MangaSeries.model.js");
 //
 router.get("/", async (req, res, next) => {
   try {
-    console.log(req.query);
+    // console.log(req.query);
     const title = req.query.title;
     const ISBN = req.query.ISBN;
     const number = req.query.number;
@@ -77,19 +77,18 @@ router.get("/", async (req, res, next) => {
     }
     if (releaseDate) {
       // let date = new Date(releaseDate);
-      console.log(date);
+      // console.log(date);
       mangaVolumeFilter = await MangaVolume.find({
         releaseDate: releaseDate,
       });
       if (reverseOrder) {
         mangaVolumeFilter = await MangaVolume.find({
           releaseDate: releaseDate,
-        })
-          .sort({
-            title: -1,
-          });
+        }).sort({
+          title: -1,
+        });
       }
-      console.log(mangaVolumeFilter);
+      // console.log(mangaVolumeFilter);
       if (mangaVolumeFilter.length === 0) {
         res.status(400).json({ message: "Please provide a correct date" });
         return;

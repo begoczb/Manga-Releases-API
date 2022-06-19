@@ -63,14 +63,14 @@ async function mangaSeriesInfo(allLinks) {
       }
     }
 
-    console.log(series);
+    // console.log(series);
     const { name } = series;
     const upsertedMangaSeries = await MangaSeries.findOneAndUpdate(
       { name: name },
       series,
       { upsert: true, new: true }
     );
-    console.log(upsertedMangaSeries);
+    // console.log(upsertedMangaSeries);
 
     await volumeInfo(scrappedLinks, upsertedMangaSeries._id, true);
     await volumeInfo(leftover, upsertedMangaSeries._id, false);
