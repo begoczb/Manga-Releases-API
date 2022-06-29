@@ -19,11 +19,16 @@ const userSchema = new Schema(
     picture: String,
     settings: {
       mode: {
+        type: String,
         enum: ["light", "dark"],
         default: "light",
       },
-      nsfw: false,
+      nsfw: {
+        type: Boolean,
+        default: false,
+      },
       lang: {
+        type: String,
         enum: ["en", "es", "fr"],
         default: "en",
       },

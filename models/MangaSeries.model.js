@@ -11,7 +11,9 @@ const mangaSeriesSchema = new Schema(
     genres: [String],
     publisher: String,
     lang: {
+      type: String,
       enum: ["en", "es", "fr"],
+      required: true,
     },
   },
 
