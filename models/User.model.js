@@ -20,10 +20,12 @@ const userSchema = new Schema(
     settings: {
       mode: {
         enum: ["light", "dark"],
+        default: "light",
       },
       nsfw: false,
       lang: {
         enum: ["en", "es", "fr"],
+        default: "en",
       },
     },
   },
