@@ -11,7 +11,7 @@ const saltRounds = 10;
 */
 router.post("/signup", async (req, res, next) => {
   try {
-    const { username, password } = req.body;
+    const { email, username, password } = req.body;
 
     const foundUser = await User.findOne({ username });
     if (foundUser) {
@@ -27,6 +27,7 @@ router.post("/signup", async (req, res, next) => {
     console.log({ hashedPassword });
 
     const createdUser = await User.create({
+      email,
       username,
       password: hashedPassword,
     });
