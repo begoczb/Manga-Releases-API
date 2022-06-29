@@ -32,6 +32,7 @@ const userSchema = new Schema(
         enum: ["en", "es", "fr"],
         default: "en",
       },
+      
     },
   },
 
