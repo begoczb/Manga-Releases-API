@@ -59,7 +59,11 @@ router.post("/login", async (req, res, next) => {
     expiresIn: "3h",
   });
 
-  res.status(200).json({ message: `Welcome ${username}`, authToken });
+
+  res.status(200).json({
+    message: `Welcome ${username}`,
+    authToken,
+  });
 });
 
 router.get("/verify", async (req, res, next) => {

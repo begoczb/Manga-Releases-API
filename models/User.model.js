@@ -4,8 +4,8 @@ const userSchema = new Schema(
   {
     email: {
       type: String,
-      unique : true,
-      required : true, 
+      unique: true,
+      required: true,
     },
     username: {
       type: String,
@@ -14,7 +14,7 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required : true,
+      required: true,
     },
     picture: String,
     settings: {
@@ -22,6 +22,9 @@ const userSchema = new Schema(
         enum: ["light", "dark"],
       },
       nsfw: false,
+      lang: {
+        enum: ["en", "es", "fr"],
+      },
     },
   },
 
