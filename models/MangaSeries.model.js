@@ -10,7 +10,7 @@ const mangaSeriesSchema = new Schema(
     synopsis: String,
     genres: [String],
     publisher: String,
-    language: {
+    lang: {
       enum: ["en", "es", "fr"],
     },
   },
