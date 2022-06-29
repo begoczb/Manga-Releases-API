@@ -1,16 +1,21 @@
 const { Schema, model, SchemaTypes } = require("mongoose");
 
-const mangaVolumeSchema = new Schema({
-  series: {
-    type: SchemaTypes.ObjectId,
-    ref: "MangaSeries",
+const mangaVolumeSchema = new Schema(
+  {
+    series: {
+      type: SchemaTypes.ObjectId,
+      ref: "MangaSeries",
+    },
+    title: { type: String, unique: true },
+    ISBN: String,
+    number: Number,
+    releaseDate: Date,
+    cover: String,
   },
-  title: { type: String, unique: true },
-  ISBN: String,
-  number: Number,
-  releaseDate: Date,
-  cover: String,
-});
+  {
+    timestamp: true,
+  }
+);
 
 const MangaVolume = model("MangaVolume", mangaVolumeSchema);
 
