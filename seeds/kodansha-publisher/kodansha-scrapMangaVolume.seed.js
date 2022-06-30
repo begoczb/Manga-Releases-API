@@ -61,7 +61,7 @@ async function volumeInfo(links, id, viewAll) {
 
       // console.log(upsertedMangaVolume);
 
-      await timer(200);
+     c
     } else {
       const volumeLinks = await homepageLinks(links[i], true);
 
