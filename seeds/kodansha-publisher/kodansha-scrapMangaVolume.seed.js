@@ -84,11 +84,20 @@ async function volumeInfo(links, id, viewAll) {
         }
 
         volume.number = j + 1;
-        volume.releaseDate = dom.window.document.querySelector(
+
+        const item = dom.window.document.querySelector(
           `[role="definition"] > .tag`
-        ).textContent;
+        );
+
+        item
+          ? (volume.releaseDate = item.textContent)
+          : (volume.releaseDate = "01/01/1990");
+        // volume.releaseDate = dom.window.document.querySelector(
+        //   `[role="definition"] > .tag`
+        // ).textContent;
+
         let { releaseDate } = volume;
-        // console.log(`date we get: ${releaseDate}`);
+        console.log(`date we get: ${releaseDate}`);
 
         if (releaseDate.includes("in")) {
           // console.log(`We have invalid date: ${releaseDate}`);
@@ -96,6 +105,10 @@ async function volumeInfo(links, id, viewAll) {
             `.product-info-box__release-info > div:nth-child(2) > div:nth-child(1) > span:nth-child(2) > span:nth-child(1)`
           ).textContent;
         }
+        // if (!releaseDate) {
+        //   releaseDate = "01/01/1990";
+        // }
+        console.log(releaseDate);
 
         volume.releaseDate = dateConversion(releaseDate, "MMDDYYYY");
 
@@ -109,7 +122,7 @@ async function volumeInfo(links, id, viewAll) {
           { upsert: true, new: true }
         );
 
-        // console.log(upsertedMangaVolume);
+        console.log(upsertedMangaVolume);
         await timer(300);
       }
     }

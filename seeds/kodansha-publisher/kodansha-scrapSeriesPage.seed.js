@@ -17,7 +17,7 @@ async function homepageLinks(url) {
       dom.window.document.querySelectorAll(`.pagination__page`);
     const pagesTotal = allPagination[allPagination.length - 1].textContent;
 
-    for (let i = 1; i <= pagesTotal; i++) {
+    for (let i = 5; i <= pagesTotal; i++) {
       const timer = (ms) => new Promise((res) => setTimeout(res, ms));
       const res = await fetch(`${baseURL}/page/${i}/`);
       const text = await res.text();
