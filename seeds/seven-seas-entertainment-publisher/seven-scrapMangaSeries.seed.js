@@ -35,6 +35,7 @@ async function mangaSeriesInfo(allLinks) {
       genres,
       synopsis: mangaSeriesSynopsis,
       publisher: "Seven Seas Entertainment",
+      lang: "en",
     };
 
     const upsertedMangaSeries = await MangaSeries.findOneAndUpdate(
@@ -42,7 +43,7 @@ async function mangaSeriesInfo(allLinks) {
       mangaSeries,
       { upsert: true, new: true }
     );
-    // console.log(upsertedMangaSeries);
+    console.log(upsertedMangaSeries);
 
     const allMangaVolumesLinks = await mangasVolumesLinks(
       link,
