@@ -1,9 +1,8 @@
 const router = require("express").Router();
 const MangaSeries = require("../models/MangaSeries.model.js");
 
-const getQueryForSearch = require("../middleware/getQueryForSearch");
+const getQueryForSearch = require("../helper/getQueryForSearch");
 const MangaVolume = require("../models/MangaVolume.model.js");
-
 
 // Filter Manga Series:
 router.get("/", async (req, res, next) => {
