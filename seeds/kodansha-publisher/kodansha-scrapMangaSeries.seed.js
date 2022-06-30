@@ -71,7 +71,7 @@ async function mangaSeriesInfo(allLinks) {
       series,
       { upsert: true, new: true }
     );
-    // console.log(upsertedMangaSeries);
+    console.log(upsertedMangaSeries);
 
     await volumeInfo(scrappedLinks, upsertedMangaSeries._id, true);
     await volumeInfo(leftover, upsertedMangaSeries._id, false);
