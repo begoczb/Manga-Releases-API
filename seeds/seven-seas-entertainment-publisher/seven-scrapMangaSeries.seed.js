@@ -5,6 +5,7 @@ const MangaSeries = require("../../models/MangaSeries.model.js");
 const mangasVolumesLinks = require("./seven- scrapMangaVolume.seed");
 
 async function mangaSeriesInfo(allLinks) {
+  const timer = (ms) => new Promise((res) => setTimeout(res, ms));
   for (let i = 0; i < allLinks.length; i++) {
     let link = allLinks[i];
     const response = await fetch(`${link}`);
@@ -49,6 +50,7 @@ async function mangaSeriesInfo(allLinks) {
       link,
       upsertedMangaSeries._id
     );
+    await timer(200);
     // console.log(allMangaVolumesLinks);
   }
 }
