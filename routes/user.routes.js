@@ -47,7 +47,7 @@ router.patch(
 );
 
 // Get user's profile
-router.get("/:username", isAuthenticated, async (req, res, next) => {
+router.get("/profile/:username", isAuthenticated, async (req, res, next) => {
   try {
     const { username } = req.params;
     const { _id, picture } = await User.findOne({ username }).select("picture");
@@ -69,7 +69,7 @@ router.get("/", isAuthenticated, async (req, res, next) => {
 });
 
 // Get user's settings
-router.get("/settings/", isAuthenticated, async (req, res, next) => {
+router.get("/settings", isAuthenticated, async (req, res, next) => {
   try {
     const { settings } = req.user;
     res.status(200).json({settings});
