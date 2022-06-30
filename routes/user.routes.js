@@ -23,25 +23,6 @@ router.get("/", async (req, res, next) => {
 
 module.exports = router;
 
-// Post upload picture
-// need is Authenticated and the DB here
-// router.post(
-//   "/upload",
-//   isAuthenticated,
-//   uploader.single("picture"),
-//   async (req, res, next) => {
-//     try {
-//       if (req.file) {
-//         req.body.picture = req.file.path;
-//         await User.findByIdAndUpdate(req.user._id, { picture: req.file.path });
-//       }
-//       res.status(201).json(req.body.picture);
-//     } catch (err) {
-//       next(err);
-//     }
-//   }
-// );
-
 router.patch(
   "/",
   isAuthenticated,
@@ -80,6 +61,17 @@ router.patch(
     }
   }
 );
+
+// Get user's profile
+router.get("/:id", isAuthenticated, async (req, res, next) => {
+  try {
+    let userInfo = await User.findById(req.params.id);
+
+    res.status(200).json(userInfo);
+  } catch (err) {
+    next(err);
+  }
+});
 
 // Get user's settings
 router.get("/settings/:username", isAuthenticated, async (req, res, next) => {
