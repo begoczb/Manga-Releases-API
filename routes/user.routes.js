@@ -1,6 +1,9 @@
 const router = require("express").Router();
 const User = require("../models/User.model.js");
 const isAuthenticated = require("../middleware/isAuthenticated");
+const jsonwebtoken = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const saltRounds = 10;
 
 const uploader = require("../config/cloudinary.config.js");
 
@@ -22,27 +25,64 @@ module.exports = router;
 
 // Post upload picture
 // need is Authenticated and the DB here
-router.post(
-  "/upload",
+// router.post(
+//   "/upload",
+//   isAuthenticated,
+//   uploader.single("picture"),
+//   async (req, res, next) => {
+//     try {
+//       if (req.file) {
+//         req.body.picture = req.file.path;
+//         await User.findByIdAndUpdate(req.user._id, { picture: req.file.path });
+//       }
+//       res.status(201).json(req.body.picture);
+//     } catch (err) {
+//       next(err);
+//     }
+//   }
+// );
+
+router.patch(
+  "/",
   isAuthenticated,
   uploader.single("picture"),
   async (req, res, next) => {
     try {
+      // const { _id } = req.user;
+
+      const { username } = req.body;
+
       if (req.file) {
-        req.body.url = req.file.path;
-        await User.findByIdAndUpdate(req.user._id, { picture: req.file.path });
+        req.body.picture = req.file.path;
       }
-      res.status(201).json(req.body.url);
+
+      if (req.body.password) {
+        const salt = await bcrypt.genSalt(saltRounds);
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        req.body.password = hashedPassword;
+      }
+
+      await User.findByIdAndUpdate(req.user, req.body);
+
+      const payload = { username };
+
+      const authToken = jsonwebtoken.sign(payload, process.env.TOKEN_SECRET, {
+        algorithm: "HS256",
+        expiresIn: "3h",
+      });
+
+      res.status(200).json({
+        message: `Good job, ${username} you updated your profil`,
+        authToken,
+      });
     } catch (err) {
       next(err);
     }
   }
 );
 
-router.patch('/edit', isAuthenticated, )
-
 // Get user's settings
-router.get("/settings/:username", async (req, res, next) => {
+router.get("/settings/:username", isAuthenticated, async (req, res, next) => {
   try {
     const { username } = req.params;
     const foundUser = await User.findOne({ username });
