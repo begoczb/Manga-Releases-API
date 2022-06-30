@@ -5,5 +5,6 @@ require("../../db");
 const runAll = async () => {
   const allLinks = await homepageLinks();
   await mangaSeriesInfo(allLinks);
+  await mongoose.connection.close()
 };
 runAll();

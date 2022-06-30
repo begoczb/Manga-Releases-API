@@ -36,6 +36,7 @@ async function mangaSeriesInfo(allLinks) {
       (element) => element.textContent
     );
     series.publisher = "KODANSHA";
+    series.lang = "en";
 
     const singleLink = dom.window.document.querySelector(`.cta--with-arrow`);
 

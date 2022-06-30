@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const User = require("../models/User.model.js");
+const isAuthenticated = require("../middleware/isAuthenticated");
 
-const fileUploader = require("../config/cloudinary.config.js");
+const uploader = require("../config/cloudinary.config.js");
 
 //Get all users
 router.get("/", async (req, res, next) => {
@@ -20,14 +21,25 @@ router.get("/", async (req, res, next) => {
 module.exports = router;
 
 // Post upload picture
-router.post("/upload", fileUploader.single("picture"), (req, res, next) => {
-  if (req.file) {
-    next(new Error("No file uploaded!"));
-    return;
+// need is Authenticated and the DB here
+router.post(
+  "/upload",
+  isAuthenticated,
+  uploader.single("picture"),
+  async (req, res, next) => {
+    try {
+      if (req.file) {
+        req.body.url = req.file.path;
+        await User.findByIdAndUpdate(req.user._id, { picture: req.file.path });
+      }
+      res.status(201).json(req.body.url);
+    } catch (err) {
+      next(err);
+    }
   }
+);
 
-  res.json({ fileUrl: req.file.path });
-});
+router.patch('/edit', isAuthenticated, )
 
 // Get user's settings
 router.get("/settings/:username", async (req, res, next) => {
