@@ -7,22 +7,6 @@ const saltRounds = 10;
 
 const uploader = require("../config/cloudinary.config.js");
 
-//Get all users
-router.get("/", async (req, res, next) => {
-  try {
-    const foundUsers = await User.find();
-    if (foundUsers.length === 0) {
-      res.sendStatus(404);
-      return;
-    }
-    res.status(200).json(foundUsers);
-  } catch (err) {
-    next(err);
-  }
-});
-
-module.exports = router;
-
 router.patch(
   "/",
   isAuthenticated,
@@ -63,30 +47,35 @@ router.patch(
 );
 
 // Get user's profile
-router.get("/:id", isAuthenticated, async (req, res, next) => {
+router.get("/:username", isAuthenticated, async (req, res, next) => {
   try {
-    let userInfo = await User.findById(req.params.id);
+    const { username } = req.params;
+    const { _id, picture } = await User.findOne({ username }).select("picture");
+    const reviews = await Review.find({ user: _id });
+    res.status(200).json({ username, picture, reviews });
+  } catch (err) {
+    next(err);
+  }
+});
 
-    res.status(200).json(userInfo);
+// Get user info (for editing)
+router.get("/", isAuthenticated, async (req, res, next) => {
+  try {
+    const { username, email, picture } = req.user;
+    res.status(200).json({ username, email, picture });
   } catch (err) {
     next(err);
   }
 });
 
 // Get user's settings
-router.get("/settings/:username", isAuthenticated, async (req, res, next) => {
+router.get("/settings/", isAuthenticated, async (req, res, next) => {
   try {
-    const { username } = req.params;
-    const foundUser = await User.findOne({ username });
-
-    if (!foundUser) {
-      res.status(404).json({ message: "username does not exist" });
-      return;
-    }
-
-    const { settings } = foundUser;
+    const { settings } = req.user;
     res.status(200).json(settings);
   } catch (err) {
     next(err);
   }
 });
+
+module.exports = router;
