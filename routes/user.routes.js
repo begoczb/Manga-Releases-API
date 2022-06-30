@@ -72,7 +72,7 @@ router.get("/", isAuthenticated, async (req, res, next) => {
 router.get("/settings/", isAuthenticated, async (req, res, next) => {
   try {
     const { settings } = req.user;
-    res.status(200).json(settings);
+    res.status(200).json({settings});
   } catch (err) {
     next(err);
   }
