@@ -16,7 +16,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    picture: String,
+    picture: {
+      type: String,
+      default: "https://i.pinimg.com/474x/8f/1b/09/8f1b09269d8df868039a5f9db169a772.jpg"
+    },
     settings: {
       mode: {
         type: String,

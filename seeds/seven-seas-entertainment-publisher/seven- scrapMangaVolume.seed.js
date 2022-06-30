@@ -53,9 +53,11 @@ async function mangasVolumesLinks(link, id) {
   const allVolumesLinks = Array.from(mangasVolumes).map(
     (element) => element.href
   );
+  const timer = (ms) => new Promise((res) => setTimeout(res, ms));
   for (let i = 0; i < allVolumesLinks.length; i++) {
     const volumeLink = allVolumesLinks[i];
     scrapeMangaVolume(volumeLink, i, id);
+    await timer(200);
   }
   return;
 }

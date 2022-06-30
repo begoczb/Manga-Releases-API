@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { isValidObjectId } = require("mongoose");
 const MangaVolume = require("../models/MangaVolume.model.js");
 const MangaSeries = require("../models/MangaSeries.model.js");
-const getQueryForSearchVolume = require("../middleware/getQueryForSearchVolume");
+const getQueryForSearchVolume = require("../helper/getQueryForSearchVolume");
 
 // get Manga Volume by ID
 router.get("/:id", async (req, res, next) => {
@@ -39,7 +39,7 @@ router.get("/series/:id", async (req, res, next) => {
   }
 });
 
-// Get query for volumes 
+// Get query for volumes
 router.get("/", async (req, res, next) => {
   try {
     const filter = getQueryForSearchVolume(req.query);
