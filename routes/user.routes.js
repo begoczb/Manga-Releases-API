@@ -27,7 +27,9 @@ router.patch(
         req.body.password = hashedPassword;
       }
 
-      const updatedUser = await User.findByIdAndUpdate(req.user, req.body);
+      const updatedUser = await User.findByIdAndUpdate(req.user, req.body, {
+        new: true,
+      });
 
       const payload = { username };
 
