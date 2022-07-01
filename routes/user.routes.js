@@ -15,31 +15,35 @@ router.patch(
   uploader.single("picture"),
   async (req, res, next) => {
     try {
-      // const { _id } = req.user;
-
-      const { username } = req.body;
+      const { username, email, password, settings } = req.body;
+      const userUpdatedFields = {};
 
       if (req.file) {
-        req.body.picture = req.file.path;
+        userUpdatedFields.picture = req.file.path;
       }
 
-      if (req.body.password) {
+      if (password) {
         const salt = await bcrypt.genSalt(saltRounds);
         const hashedPassword = await bcrypt.hash(req.body.password, salt);
-        req.body.password = hashedPassword;
+        userUpdatedFields.password = hashedPassword;
       }
-      const user = await User.findById(req.user._id);
-      let { settings } = req.body;
+
+      if (email) {
+        userUpdatedFields.email = email;
+      }
+      if (settings) {
+        userUpdatedFields.settings = { ...req.user.settings, ...settings };
+      }
 
       const updatedUser = await User.findByIdAndUpdate(
         req.user._id,
-        { ...req.body, settings: { ...user.settings, ...settings } },
+        userUpdatedFields,
         {
           new: true,
         }
       );
 
-      const payload = { username };
+      const payload = { username: updatedUser.username };
 
       const authToken = jsonwebtoken.sign(payload, process.env.TOKEN_SECRET, {
         algorithm: "HS256",
@@ -47,7 +51,7 @@ router.patch(
       });
 
       res.status(200).json({
-        message: `Good job, ${username} you updated your profil`,
+        message: `Good job, ${updatedUser.username} you updated your profil`,
         authToken,
         updatedUser: updatedUser,
       });
