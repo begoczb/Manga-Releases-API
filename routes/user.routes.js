@@ -10,7 +10,7 @@ const Favorite = require("../models/Favorite.model");
 const uploader = require("../config/cloudinary.config.js");
 
 router.patch(
-  "/",
+  "/me",
   isAuthenticated,
   uploader.single("picture"),
   async (req, res, next) => {
