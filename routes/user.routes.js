@@ -31,7 +31,7 @@ router.patch(
 
       const updatedUser = await User.findByIdAndUpdate(
         req.user._id,
-        { ...req.body, settings: { ...settings, ...user.settings } },
+        { ...req.body, settings: { ...user.settings, ...settings } },
         {
           new: true,
         }
