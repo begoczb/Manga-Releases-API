@@ -35,6 +35,10 @@ router.patch(
         userUpdatedFields.settings = { ...req.user.settings, ...settings };
       }
 
+      if (username) {
+        userUpdatedFields.username = username;
+      }
+
       const updatedUser = await User.findByIdAndUpdate(
         req.user._id,
         userUpdatedFields,
