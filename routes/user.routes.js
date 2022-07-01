@@ -26,10 +26,16 @@ router.patch(
         const hashedPassword = await bcrypt.hash(req.body.password, salt);
         req.body.password = hashedPassword;
       }
+      const user = await User.findById(req.user._id);
+      let { settings } = req.body;
 
-      const updatedUser = await User.findByIdAndUpdate(req.user, req.body, {
-        new: true,
-      });
+      const updatedUser = await User.findByIdAndUpdate(
+        req.user._id,
+        { ...req.body, settings: { ...user.settings, ...settings } },
+        {
+          new: true,
+        }
+      );
 
       const payload = { username };
 
