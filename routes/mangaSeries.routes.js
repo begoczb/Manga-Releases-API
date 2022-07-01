@@ -12,7 +12,7 @@ router.get("/", async (req, res, next) => {
       locale: "en",
     });
 
-    console.log(mangaSeriesFilter);
+    // console.log(mangaSeriesFilter);
 
     let allCovers = mangaSeriesFilter.map(async (series) => {
       const coverImg = await MangaVolume.find({ series: series._id })
@@ -28,7 +28,7 @@ router.get("/", async (req, res, next) => {
     });
 
     const allPromises = await Promise.all(allCovers);
-    console.log(allCovers);
+    // console.log(allCovers);
 
     res.status(200).json({ mangaSeriesFilter, allPromises });
   } catch (err) {
