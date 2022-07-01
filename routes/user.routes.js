@@ -4,6 +4,8 @@ const isAuthenticated = require("../middleware/isAuthenticated");
 const jsonwebtoken = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const saltRounds = 10;
+const Review = require("../models/Review.model");
+const Favorite = require("../models/Favorite.model");
 
 const uploader = require("../config/cloudinary.config.js");
 
@@ -61,17 +63,22 @@ router.get("/profile/:username", isAuthenticated, async (req, res, next) => {
     const { username } = req.params;
     const { _id, picture } = await User.findOne({ username }).select("picture");
     const reviews = await Review.find({ user: _id });
-    res.status(200).json({ username, picture, reviews });
+    const favorites = await Favorite.fin({ user: _id });
+    res.status(200).json({ username, picture, reviews, favorites });
   } catch (err) {
     next(err);
   }
 });
 
 // Get user info (for editing)
-router.get("/", isAuthenticated, async (req, res, next) => {
+router.get("/me", isAuthenticated, async (req, res, next) => {
   try {
-    const { username, email, picture } = req.user;
-    res.status(200).json({ username, email, picture });
+    const { username, email, picture, _id, settings } = req.user;
+    const reviews = await Review.find({ user: _id });
+    const favorites = await Favorite.find({ user: _id });
+    res
+      .status(200)
+      .json({ username, email, picture, reviews, favorites, settings });
   } catch (err) {
     next(err);
   }
