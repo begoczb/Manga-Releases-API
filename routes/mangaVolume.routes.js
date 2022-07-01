@@ -53,4 +53,34 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+router.get("/:year/:month", async (req, res, next) => {
+  try {
+    let latestVolumes = [];
+    const { year, month } = req.params;
+
+    const nextMonth = month * 1 + 01;
+    const startOfNextMonth = `0${nextMonth}`;
+
+    const foundVolumes = await MangaVolume.find({
+      releaseDate: {
+        $gte: new Date(`${year}/${month}/01`),
+        $lt: new Date(`${year}/${startOfNextMonth}/01`),
+      },
+    })
+      .sort({
+        number: 1,
+      })
+      .populate("series", { name: 1 });
+
+    if (foundVolumes.length === 0) {
+      res.sendStatus(404);
+      return;
+    }
+
+    res.status(200).json(foundVolumes);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
