@@ -11,6 +11,7 @@ const reviewSchema = new Schema(
       ref: "MangaSeries",
     },
     rating: Number,
+    textContent: String,
   },
   {
     timestamps: true,
