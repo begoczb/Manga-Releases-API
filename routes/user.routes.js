@@ -71,7 +71,7 @@ router.get("/profile/:username", isAuthenticated, async (req, res, next) => {
     const { username } = req.params;
     const { _id, picture } = await User.findOne({ username }).select("picture");
     const reviews = await Review.find({ user: _id });
-    const favorites = await Favorite.fin({ user: _id });
+    const favorites = await Favorite.find({ user: _id });
     res.status(200).json({ username, picture, reviews, favorites });
   } catch (err) {
     next(err);
