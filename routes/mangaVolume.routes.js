@@ -55,7 +55,6 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:year/:month", async (req, res, next) => {
   try {
-    let latestVolumes = [];
     const { year, month } = req.params;
 
     const nextMonth = month * 1 + 01;
