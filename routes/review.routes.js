@@ -6,7 +6,7 @@ const { isValidObjectId } = require("mongoose");
 const MangaSeries = require("../models/MangaSeries.model.js");
 
 // Get all Reviews from User:
-router.get("/", isAuthenticated, async (req, res, next) => {
+router.get("/user", isAuthenticated, async (req, res, next) => {
   try {
     const { _id } = req.user;
     const foundReviews = await Review.find({ user: _id }).populate("series", {
@@ -20,8 +20,25 @@ router.get("/", isAuthenticated, async (req, res, next) => {
   }
 });
 
+//Get all Reviews for a Series
+router.get("/series", async (req, res, next) => {
+  try {
+    const { seriesId } = req.body;
+    const foundReviews = await Review.find({ series: seriesId }).populate(
+      "user",
+      {
+        username: 1,
+        picture: 1,
+      }
+    );
+    res.status(200).json(foundReviews);
+  } catch (err) {
+    next(err);
+  }
+});
+
 //Get One Review
-router.get("/:id", isAuthenticated, async (req, res, next) => {
+router.get("/single/:id", isAuthenticated, async (req, res, next) => {
   try {
     const { id } = req.params;
 
