@@ -46,14 +46,12 @@ router.patch(
           new: true,
         }
       );
-
       const payload = { username: updatedUser.username };
 
       const authToken = jsonwebtoken.sign(payload, process.env.TOKEN_SECRET, {
         algorithm: "HS256",
         expiresIn: "3h",
       });
-
       res.status(200).json({
         message: `Good job, ${updatedUser.username} you updated your profil`,
         authToken,
