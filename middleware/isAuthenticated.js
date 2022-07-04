@@ -13,9 +13,10 @@ const isAuthenticated = async (req, res, next) => {
   const token = authorization.replace("Bearer ", "");
   try {
     const decodedJwt = jsonwebtoken.verify(token, process.env.TOKEN_SECRET);
-    // console.log({ decodedJwt });
+    console.log({ decodedJwt });
     const { username } = decodedJwt;
     const user = await User.findOne({ username });
+    console.log(user)
 
     req.user = user;
   } catch (error) {
