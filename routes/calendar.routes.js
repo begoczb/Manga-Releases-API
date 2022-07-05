@@ -43,6 +43,7 @@ router.get("/:year/:month", isAuthenticated, async (req, res, next) => {
     const { year, month } = req.params;
 
     let nextMonth;
+    console.log(`month from url:`, month, `type:`, typeof month);
 
     if (month === "12") {
       nextMonth = "01";
