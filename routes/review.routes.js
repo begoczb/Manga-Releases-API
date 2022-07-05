@@ -92,18 +92,14 @@ router.post("/", isAuthenticated, async (req, res, next) => {
       return;
     }
 
-    const { _id } = await Review.create({
+    const newReview = await Review.create({
       user,
       series,
       rating,
       textContent,
     });
-    const populatedFavorite = await Favorite.findById(_id).populate(
-      "user series",
-      { username: 1, name: 1, authors: 1, _id: 0 }
-    );
 
-    res.status(201).json(populatedFavorite);
+    res.status(201).json(newReview);
   } catch (error) {
     next(error);
   }
