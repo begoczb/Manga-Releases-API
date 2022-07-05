@@ -1,9 +1,9 @@
 const router = require("express").Router();
 const isAuthenticated = require("../middleware/isAuthenticated");
-const isAuthorizedUser = require("../middleware/isAuthorizedUser");
 const Review = require("../models/Review.model");
 const { isValidObjectId } = require("mongoose");
 const MangaSeries = require("../models/MangaSeries.model.js");
+const isPosterOfReview = require("../middleware/isPosterOfReview");
 
 // Get all Reviews from User:
 router.get("/user", isAuthenticated, async (req, res, next) => {
@@ -108,7 +108,7 @@ router.post("/", isAuthenticated, async (req, res, next) => {
 router.patch(
   "/:reviewId",
   isAuthenticated,
-  isAuthorizedUser,
+  isPosterOfReview,
   async (req, res, next) => {
     try {
       const id = req.params.reviewId;
@@ -140,7 +140,7 @@ router.patch(
 router.delete(
   "/:reviewId",
   isAuthenticated,
-  isAuthorizedUser,
+  isPosterOfReview,
   async (req, res, next) => {
     try {
       if (!isValidObjectId(req.params.reviewId)) {
