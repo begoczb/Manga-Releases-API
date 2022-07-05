@@ -53,10 +53,10 @@ router.get("/:year/:month", isAuthenticated, async (req, res, next) => {
     console.log(`month from url`, month);
     console.log(`next month`, nextMonth);
 
+    const startOfNextMonth = `${nextMonth}`;
+
     console.log(`date start: ${new Date(`${year}/${month}/01`)}`);
     console.log(`date emd: ${new Date(`${year}/${startOfNextMonth}/01`)}`);
-
-    const startOfNextMonth = `${nextMonth}`;
 
     const foundFavorites = await Favorite.find({ user: _id });
     for (let i = 0; i < foundFavorites.length; i++) {
