@@ -64,32 +64,32 @@ router.post("/", isAuthenticated, async (req, res, next) => {
   try {
     let { series } = req.body;
     const user = req.user._id;
-    const rating = req.body;
-    const textContent = req.body;
+    const rating = parseInt(req.body.rating);
+    const { textContent } = req.body;
 
-    if (!isValidObjectId(series)) {
-      const foundSeries = await MangaSeries.findOne({
-        name: { $regex: new RegExp(series, "i") },
-      });
-      if (foundSeries) {
-        series = foundSeries._id;
-      } else {
-        res.status(400).json({
-          message:
-            'Please provide a valid object id for "series" or an existing series name.',
-        });
-        return;
-      }
-    }
-    const foundReview = await Review.find({
-      $and: [{ series: series }, { user: user }],
-    });
-    if (foundReview.length != 0) {
-      res
-        .status(409)
-        .json({ message: `You already have reviewed this series` });
-      return;
-    }
+    // if (!isValidObjectId(series)) {
+    //   const foundSeries = await MangaSeries.findOne({
+    //     name: { $regex: new RegExp(series, "i") },
+    //   });
+    //   if (foundSeries) {
+    //     series = foundSeries._id;
+    //   } else {
+    //     res.status(400).json({
+    //       message:
+    //         'Please provide a valid object id for "series" or an existing series name.',
+    //     });
+    //     return;
+    //   }
+    // }
+    // const foundReview = await Review.find({
+    //   $and: [{ series: series }, { user: user }],
+    // });
+    // if (foundReview.length != 0) {
+    //   res
+    //     .status(409)
+    //     .json({ message: `You already have reviewed this series` });
+    //   return;
+    // }
 
     const newReview = await Review.create({
       user,
