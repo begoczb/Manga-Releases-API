@@ -51,13 +51,13 @@ router.get("/:year/:month", isAuthenticated, async (req, res, next) => {
       nextMonth = month * 1 + 01;
     }
 
-    console.log(`month from url`, month);
-    console.log(`next month`, nextMonth);
+    // console.log(`month from url`, month);
+    // console.log(`next month`, nextMonth);
 
     const startOfNextMonth = `${nextMonth}`;
 
-    console.log(`date start: ${new Date(`${year}/${month}/01`)}`);
-    console.log(`date emd: ${new Date(`${year}/${startOfNextMonth}/01`)}`);
+    // console.log(`date start: ${new Date(`${year}/${month}/01`)}`);
+    // console.log(`date emd: ${new Date(`${year}/${startOfNextMonth}/01`)}`);
 
     const foundFavorites = await Favorite.find({ user: _id });
     for (let i = 0; i < foundFavorites.length; i++) {
@@ -89,7 +89,7 @@ router.get("/:year/:month", isAuthenticated, async (req, res, next) => {
     }
 
     if (latestVolumes.length === 0) {
-      res.sendStatus(404);
+      res.sendStatus(204);
       return;
     }
 
