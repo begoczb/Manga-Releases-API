@@ -4,6 +4,7 @@ const Review = require("../models/Review.model");
 const { isValidObjectId } = require("mongoose");
 const MangaSeries = require("../models/MangaSeries.model.js");
 const isPosterOfReview = require("../middleware/isPosterOfReview");
+const User = require("../models/User.model");
 
 // Get all Reviews from User:
 router.get("/user", isAuthenticated, async (req, res, next) => {
