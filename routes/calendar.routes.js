@@ -42,8 +42,21 @@ router.get("/:year/:month", isAuthenticated, async (req, res, next) => {
     let latestVolumes = [];
     const { year, month } = req.params;
 
-    const nextMonth = month * 1 + 01;
-    const startOfNextMonth = `0${nextMonth}`;
+    let nextMonth;
+
+    if (month === 12) {
+      nextMonth = 01;
+    } else {
+      nextMonth = month * 1 + 01;
+    }
+
+    console.log(`month from url`, month);
+    console.log(`next month`, nextMonth);
+
+    console.log(`date start: ${new Date(`${year}/${month}/01`)}`);
+    console.log(`date emd: ${new Date(`${year}/${startOfNextMonth}/01`)}`);
+
+    const startOfNextMonth = `${nextMonth}`;
 
     const foundFavorites = await Favorite.find({ user: _id });
     for (let i = 0; i < foundFavorites.length; i++) {
