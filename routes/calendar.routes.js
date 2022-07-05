@@ -44,8 +44,8 @@ router.get("/:year/:month", isAuthenticated, async (req, res, next) => {
 
     let nextMonth;
 
-    if (month === 12) {
-      nextMonth = 01;
+    if (month === "12") {
+      nextMonth = "01";
     } else {
       nextMonth = month * 1 + 01;
     }
