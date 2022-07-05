@@ -12,7 +12,6 @@ router.get("/user", isAuthenticated, async (req, res, next) => {
     const foundReviews = await Review.find({ user: _id }).populate("series", {
       name: 1,
       authors: 1,
-      _id: 0,
     });
     res.status(200).json(foundReviews);
   } catch (err) {
