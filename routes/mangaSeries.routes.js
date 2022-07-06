@@ -85,6 +85,31 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+router.get("/genres", async (req, res, next) => {
+  const [{ genres }] = await MangaSeries.aggregate([
+    {
+      $project: {
+        _id: 0,
+        genres: "$genres",
+      },
+    },
+    {
+      $unwind: {
+        path: "$genres",
+      },
+    },
+    {
+      $group: {
+        _id: 1,
+        genres: {
+          $addToSet: "$genres",
+        },
+      },
+    },
+  ]);
+  res.json({ genres });
+});
+
 // Route manga series by ID
 router.get("/:id", async (req, res, next) => {
   try {
