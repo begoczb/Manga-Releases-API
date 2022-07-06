@@ -4,16 +4,33 @@ const isAuthorizedUser = require("../middleware/isAuthorizedUser");
 const Favorite = require("../models/Favorite.model.js");
 const { isValidObjectId } = require("mongoose");
 const MangaSeries = require("../models/MangaSeries.model.js");
+const MangaVolume = require("../models/MangaVolume.model");
 
 // Get all Favorites from User:
-router.get("/", isAuthenticated, async (req, res, next) => {
+router.get("/:userId/user", async (req, res, next) => {
   try {
-    const { _id } = req.user;
-    const foundFavorites = await Favorite.find({ user: _id }).populate(
+    const { userId } = req.params;
+    const foundFavorites = await Favorite.find({ user: userId }).populate(
       "series",
-      { name: 1, authors: 1, _id: 0 }
+      { name: 1, authors: 1 }
     );
-    res.status(200).json(foundFavorites);
+
+    let allCovers = foundFavorites.map(async (favorite) => {
+      const coverImg = await MangaVolume.find({ series: favorite.series._id })
+        .sort({ number: 1 })
+        .limit(1);
+
+      if (!coverImg[0]) {
+        coverImg[0] = { cover: "no image" };
+      }
+      // console.log(coverImg[0].cover);
+
+      return coverImg[0].cover;
+    });
+
+    const allPromises = await Promise.all(allCovers);
+
+    res.status(200).json(foundFavorites, allPromises);
   } catch (err) {
     next(err);
   }
