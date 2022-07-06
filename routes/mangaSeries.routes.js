@@ -100,4 +100,21 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+//Get all Reviews for a Series
+router.get("/:seriesId/reviews", async (req, res, next) => {
+  try {
+    const { seriesId } = req.params;
+    const foundReviews = await Review.find({ series: seriesId }).populate(
+      "user",
+      {
+        username: 1,
+        picture: 1,
+      }
+    );
+    res.status(200).json(foundReviews);
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

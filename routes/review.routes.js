@@ -20,23 +20,6 @@ router.get("/user", isAuthenticated, async (req, res, next) => {
   }
 });
 
-//Get all Reviews for a Series
-router.get("/series", async (req, res, next) => {
-  try {
-    const { seriesId } = req.body;
-    const foundReviews = await Review.find({ series: seriesId }).populate(
-      "user",
-      {
-        username: 1,
-        picture: 1,
-      }
-    );
-    res.status(200).json(foundReviews);
-  } catch (err) {
-    next(err);
-  }
-});
-
 //Get One Review
 router.get("/single/:id", isAuthenticated, async (req, res, next) => {
   try {
