@@ -12,13 +12,18 @@ router.get("/user", isAuthenticated, async (req, res, next) => {
   try {
     const { _id } = req.user;
 
-    const foundReviews = await Review.find({ user: _id }).populate("series", {
-      name: 1,
-      authors: 1,
-    });
+    const foundReviews = await Review.find({ user: _id })
+      .populate("series", {
+        name: 1,
+        authors: 1,
+      })
+      .populate("user", {
+        username: 1,
+        picture: 1,
+      });
 
-    let allCovers = foundReviews.map(async (series) => {
-      const coverImg = await MangaVolume.find({ series: series._id })
+    let allCovers = foundReviews.map(async (review) => {
+      const coverImg = await MangaVolume.find({ series: review.series._id })
         .sort({ number: 1 })
         .limit(1);
 
