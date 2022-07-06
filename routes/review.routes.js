@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const isAuthenticated = require("../middleware/isAuthenticated");
 const Review = require("../models/Review.model");
+const MangaVolume = require("../models/MangaVolume.model");
 const { isValidObjectId } = require("mongoose");
 const MangaSeries = require("../models/MangaSeries.model.js");
 const isPosterOfReview = require("../middleware/isPosterOfReview");
@@ -10,11 +11,27 @@ const User = require("../models/User.model");
 router.get("/user", isAuthenticated, async (req, res, next) => {
   try {
     const { _id } = req.user;
+
     const foundReviews = await Review.find({ user: _id }).populate("series", {
       name: 1,
       authors: 1,
     });
-    res.status(200).json(foundReviews);
+
+    let allCovers = foundReviews.map(async (series) => {
+      const coverImg = await MangaVolume.find({ series: series._id })
+        .sort({ number: 1 })
+        .limit(1);
+
+      if (!coverImg[0]) {
+        coverImg[0] = { cover: "no image" };
+      }
+      // console.log(coverImg[0].cover);
+
+      return coverImg[0].cover;
+    });
+
+    const allPromises = await Promise.all(allCovers);
+    res.status(200).json({ foundReviews, allPromises });
   } catch (err) {
     next(err);
   }
