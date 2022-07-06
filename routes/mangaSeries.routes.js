@@ -2,6 +2,7 @@ const router = require("express").Router();
 
 const MangaSeries = require("../models/MangaSeries.model.js");
 const MangaVolume = require("../models/MangaVolume.model.js");
+const Review = require("../models/Review.model");
 
 const getQueryForSearch = require("../helper/getQueryForSearch");
 
