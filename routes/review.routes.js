@@ -8,11 +8,11 @@ const isPosterOfReview = require("../middleware/isPosterOfReview");
 const User = require("../models/User.model");
 
 // Get all Reviews from User:
-router.get("/user", isAuthenticated, async (req, res, next) => {
+router.get("/:userId/user", async (req, res, next) => {
   try {
-    const { _id } = req.user;
+    const { userId } = req.params;
 
-    const foundReviews = await Review.find({ user: _id })
+    const foundReviews = await Review.find({ user: userId })
       .populate("series", {
         name: 1,
         authors: 1,

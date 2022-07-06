@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 const saltRounds = 10;
 const Review = require("../models/Review.model");
 const Favorite = require("../models/Favorite.model");
+const MangaVolume = require("../models/MangaVolume.model");
 
 const uploader = require("../config/cloudinary.config.js");
 
@@ -80,11 +81,62 @@ router.get("/profile/:username", isAuthenticated, async (req, res, next) => {
 router.get("/me", isAuthenticated, async (req, res, next) => {
   try {
     const { username, email, picture, _id, settings } = req.user;
-    const reviews = await Review.find({ user: _id });
-    const favorites = await Favorite.find({ user: _id });
-    res
-      .status(200)
-      .json({ username, email, picture, reviews, favorites, settings });
+
+    const reviews = await Review.find({ user: _id })
+      .populate("series", {
+        name: 1,
+        authors: 1,
+      })
+      .populate("user", {
+        username: 1,
+        picture: 1,
+      });
+
+    let allReviewsCovers = reviews.map(async (review) => {
+      const coverImg = await MangaVolume.find({ series: review.series._id })
+        .sort({ number: 1 })
+        .limit(1);
+
+      if (!coverImg[0]) {
+        coverImg[0] = { cover: "no image" };
+      }
+      // console.log(coverImg[0].cover);
+
+      return coverImg[0].cover;
+    });
+
+    const revCovers = await Promise.all(allReviewsCovers);
+
+    const favorites = await Favorite.find({ user: _id }).populate("series", {
+      name: 1,
+      authors: 1,
+    });
+
+    let allFavoriteCovers = favorites.map(async (favorite) => {
+      const coverImg = await MangaVolume.find({ series: favorite.series._id })
+        .sort({ number: 1 })
+        .limit(1);
+
+      if (!coverImg[0]) {
+        coverImg[0] = { cover: "no image" };
+      }
+      // console.log(coverImg[0].cover);
+
+      return coverImg[0].cover;
+    });
+
+    const favCovers = await Promise.all(allFavoriteCovers);
+
+    res.status(200).json({
+      username,
+      email,
+      picture,
+      reviews,
+      revCovers,
+      favorites,
+      favCovers,
+      settings,
+    });
   } catch (err) {
     next(err);
   }
