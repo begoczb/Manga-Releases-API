@@ -69,9 +69,9 @@ router.get("/profile/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
 
-    const { _id, picture } = await User.findById(userId).select("picture");
+    const { username, picture } = await User.findById(userId).select("picture");
 
-    const reviews = await Review.find({ user: _id })
+    const reviews = await Review.find({ user: userId })
       .populate("series", {
         name: 1,
         authors: 1,
@@ -96,7 +96,7 @@ router.get("/profile/:userId", async (req, res, next) => {
 
     const revCovers = await Promise.all(allReviewsCovers);
 
-    const favorites = await Favorite.find({ user: _id }).populate("series", {
+    const favorites = await Favorite.find({ user: userId }).populate("series", {
       name: 1,
       authors: 1,
     });
