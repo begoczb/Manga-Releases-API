@@ -26,18 +26,25 @@ async function volumeInfo(links, id, viewAll) {
       );
 
       if (!tempIsbn) {
-        volume.ISBN = dom.window.document.querySelector(
+        let isbnSelector = dom.window.document.querySelector(
           `div.l-sidebar--baseline:nth-child(2) > span:nth-child(2) > span:nth-child(1)`
-        ).textContent;
+        );
+        isbnSelector
+          ? (volume.ISBN = isbnSelector.textContent)
+          : (volume.ISBN = "ISBN not available");
       } else {
         volume.ISBN = tempIsbn.textContent;
       }
 
       volume.number = i + 1;
 
-      volume.releaseDate = dom.window.document.querySelector(
+      let releaseDateSelector = dom.window.document.querySelector(
         `[role="definition"] > .tag`
-      ).textContent;
+      );
+
+      releaseDateSelector
+        ? (volume.releaseDate = releaseDateSelector.textContent)
+        : (volume.releaseDate = "01/01/2022");
 
       let { releaseDate } = volume;
       // console.log(`date we get: ${releaseDate}`);
@@ -50,7 +57,15 @@ async function volumeInfo(links, id, viewAll) {
       }
 
       volume.releaseDate = dateConversion(releaseDate, "MMDDYYYY");
-      volume.cover = dom.window.document.querySelector(`.attachment-large`).src;
+
+      if (dom.window.document.querySelector(`.attachment-large`)) {
+        volume.cover =
+          dom.window.document.querySelector(`.attachment-large`).src;
+      } else {
+        volume.cover = dom.window.document.querySelector(
+          `.l-frame > img:nth-child(1) `
+        ).src;
+      }
 
       const { title } = volume;
       const upsertedMangaVolume = await MangaVolume.findOneAndUpdate(
@@ -60,8 +75,6 @@ async function volumeInfo(links, id, viewAll) {
       );
 
       // console.log(upsertedMangaVolume);
-
-     c
     } else {
       const volumeLinks = await homepageLinks(links[i], true);
 
@@ -97,7 +110,7 @@ async function volumeInfo(links, id, viewAll) {
         // ).textContent;
 
         let { releaseDate } = volume;
-        console.log(`date we get: ${releaseDate}`);
+        // console.log(`date we get: ${releaseDate}`);
 
         if (releaseDate.includes("in")) {
           // console.log(`We have invalid date: ${releaseDate}`);
@@ -108,7 +121,7 @@ async function volumeInfo(links, id, viewAll) {
         // if (!releaseDate) {
         //   releaseDate = "01/01/1990";
         // }
-        console.log(releaseDate);
+        // console.log(releaseDate);
 
         volume.releaseDate = dateConversion(releaseDate, "MMDDYYYY");
 

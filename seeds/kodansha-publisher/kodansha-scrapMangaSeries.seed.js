@@ -52,11 +52,15 @@ async function mangaSeriesInfo(allLinks) {
       } else {
         // console.log(`we don't have singleLink`);
         firstSelector = dom.window.document.querySelector(".product-discovery");
+
         if (!firstSelector) {
           continue;
         }
 
         let leftoverLink = firstSelector.querySelectorAll(`.card__link`);
+
+        // console.log(leftoverLink.length);
+        // leftoverLink.forEach((elem) => console.log(elem.href));
 
         Array.from(leftoverLink).forEach((element) =>
           leftover.push(element.href)
